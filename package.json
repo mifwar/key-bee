@@ -1,0 +1,49 @@
+{
+  "name": "keybind-tui",
+  "version": "1.0.0",
+  "description": "A TUI for browsing and searching keybindings across tools (skhd, tmux, nvim, karabiner, zsh, hammerspoon)",
+  "type": "module",
+  "license": "MIT",
+  "author": "mifwar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mifwar/keybind-tui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mifwar/keybind-tui/issues"
+  },
+  "homepage": "https://github.com/mifwar/keybind-tui#readme",
+  "keywords": [
+    "tui",
+    "terminal",
+    "keybindings",
+    "skhd",
+    "tmux",
+    "neovim",
+    "karabiner",
+    "dotfiles",
+    "cli",
+    "opentui"
+  ],
+  "bin": {
+    "kb": "src/index.tsx"
+  },
+  "scripts": {
+    "dev": "bun run src/index.tsx",
+    "build": "bun build src/index.tsx --outdir dist --target bun"
+  },
+  "dependencies": {
+    "@opentui/core": "^0.1.63",
+    "@opentui/react": "^0.1.63",
+    "react": "^19.0.0",
+    "fuse.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
