@@ -10,6 +10,8 @@ Built with [Ink](https://github.com/vadimdemedes/ink) + [React](https://react.de
 
 ![Key Bee - All keybindings view](./assets/key-bee-all.png)
 
+https://github.com/user-attachments/assets/5d8412c3-ac3c-4e1c-b830-38671b288781
+
 ## Features
 
 - **Multi-tool support**: skhd, tmux, nvim, karabiner, zsh, hammerspoon
