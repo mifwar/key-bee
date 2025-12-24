@@ -7,8 +7,7 @@ A terminal user interface for browsing and searching all your **keyb**indings ac
 
 Built with [Ink](https://github.com/vadimdemedes/ink) + [React](https://react.dev).
 
-<!-- TODO: Add screenshot/gif here -->
-<!-- ![Demo](./demo.gif) -->
+![Key Bee - All keybindings view](./assets/key-bee-all.png)
 
 ## Features
 
