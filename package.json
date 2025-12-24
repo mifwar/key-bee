@@ -30,7 +30,8 @@
     "kb": "dist/cli.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "dev": "npx tsx src/cli.ts",
