@@ -296,7 +296,21 @@ export function App({ onExit, onOpenFile }: Props) {
     return byTool.get(ui.activeTab.toLowerCase()) || []
   }, [ui.activeTab, ui.searchQuery, allBindings, byTool, fuse])
 
-  const maxVisible = Math.max(1, ui.viewport.height - 8)
+  // Reserve rows for header, search UI, list margin, and footer.
+  const headerHeight = 4 // title row + tab row + tab margin + bottom border
+  const searchHeight = ui.searchMode ? 3 : 0 // input row + help row + bottom border
+  const resultsHeight = ui.searchQuery && !ui.searchMode ? 2 : 0 // results row + bottom border
+  const listMarginHeight = 1
+  const footerHeight = 2 // footer row + top border
+  const footerMarginHeight = 1
+  const reservedHeight =
+    headerHeight +
+    searchHeight +
+    resultsHeight +
+    listMarginHeight +
+    footerHeight +
+    footerMarginHeight
+  const maxVisible = Math.max(1, ui.viewport.height - reservedHeight)
 
   const currentListLength =
     ui.activeTab === "Conflicts" ? conflicts.length : filteredBindings.length
