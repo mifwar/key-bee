@@ -53,5 +53,3 @@ export async function runApp() {
   instance = render(<App onExit={cleanupAndExit} onOpenFile={openInEditor} />)
   await instance.waitUntilExit()
 }
-
-runApp().catch(console.error)
