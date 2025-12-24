@@ -8,6 +8,7 @@ export interface CustomParserConfig {
   descriptionGroup?: number
   modeGroup?: number
   commentPrefix?: string
+  color?: string
 }
 
 export interface BuiltinSourceConfig {
@@ -36,40 +37,47 @@ export interface Cache {
   version: number
   lastSync: string
   entries: CacheEntry[]
-  bindings: import("../parsers/types").Keybinding[]
+  bindings: import("../parsers/types.js").Keybinding[]
+  ui?: {
+    activeTab?: string
+    searchQuery?: string
+  }
 }
 
 export const DEFAULT_CONFIG: Config = {
   basePaths: [],
   sources: [],
   autoSync: true,
-  showWelcome: true,
+  showWelcome: true
 }
 
-export const BUILTIN_PATTERNS: Record<string, { glob: string; type: BuiltinSourceConfig["type"] }[]> = {
+export const BUILTIN_PATTERNS: Record<
+  string,
+  { glob: string; type: BuiltinSourceConfig["type"] }[]
+> = {
   skhd: [
     { glob: "**/skhd/skhdrc", type: "skhd" },
-    { glob: "**/.skhdrc", type: "skhd" },
+    { glob: "**/.skhdrc", type: "skhd" }
   ],
   tmux: [
     { glob: "**/tmux/.tmux.conf", type: "tmux" },
     { glob: "**/tmux/tmux.conf", type: "tmux" },
-    { glob: "**/.tmux.conf", type: "tmux" },
+    { glob: "**/.tmux.conf", type: "tmux" }
   ],
   nvim: [
     { glob: "**/nvim/lua/**/keymaps.lua", type: "nvim-keymap" },
-    { glob: "**/nvim/lua/**/keys.lua", type: "nvim-keymap" },
+    { glob: "**/nvim/lua/**/keys.lua", type: "nvim-keymap" }
   ],
   karabiner: [
     { glob: "**/.config/karabiner/karabiner.json", type: "karabiner" },
-    { glob: "**/karabiner/karabiner.json", type: "karabiner" },
+    { glob: "**/karabiner/karabiner.json", type: "karabiner" }
   ],
   zsh: [
     { glob: "**/.zshrc", type: "zsh-alias" },
-    { glob: "**/zsh/.zshrc", type: "zsh-alias" },
+    { glob: "**/zsh/.zshrc", type: "zsh-alias" }
   ],
   hammerspoon: [
     { glob: "**/.hammerspoon/init.lua", type: "hammerspoon" },
-    { glob: "**/hammerspoon/init.lua", type: "hammerspoon" },
-  ],
+    { glob: "**/hammerspoon/init.lua", type: "hammerspoon" }
+  ]
 }

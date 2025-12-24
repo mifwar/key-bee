@@ -1,4 +1,4 @@
-# Contributing to Keybind TUI
+# Contributing to Key Bee
 
 Thanks for your interest in contributing! Here's how you can help.
 
@@ -6,14 +6,20 @@ Thanks for your interest in contributing! Here's how you can help.
 
 ```bash
 # Clone the repo
-git clone https://github.com/mifwar/keybind-tui.git
-cd keybind-tui
+git clone https://github.com/mifwar/key-bee.git
+cd key-bee
 
 # Install dependencies
-bun install
+npm install
 
 # Run in development
-bun run dev
+npm run dev
+
+# Build
+npm run build
+
+# Run built version
+node dist/cli.js
 ```
 
 ## Adding a New Parser
@@ -22,7 +28,7 @@ bun run dev
 
 ```typescript
 // src/parsers/myapp.ts
-import type { Keybinding } from "./types"
+import type { Keybinding } from "./types.js"
 
 export function parseMyApp(content: string): Keybinding[] {
   const bindings: Keybinding[] = []
@@ -34,11 +40,11 @@ export function parseMyApp(content: string): Keybinding[] {
 2. Register it in `src/parsers/index.ts`:
 
 ```typescript
-import { parseMyApp } from "./myapp"
+import { parseMyApp } from "./myapp.js"
 
 const PARSERS: Record<string, (content: string) => Keybinding[]> = {
   // ... existing parsers
-  "myapp": parseMyApp,
+  myapp: parseMyApp
 }
 ```
 
@@ -47,17 +53,24 @@ const PARSERS: Record<string, (content: string) => Keybinding[]> = {
 ```typescript
 export const BUILTIN_PATTERNS = {
   // ... existing patterns
-  myapp: [
-    { glob: "**/.myapprc", type: "myapp" },
-  ],
+  myapp: [{ glob: "**/.myapprc", type: "myapp" }]
+}
+```
+
+4. Add a color in `src/utils/colors.ts`:
+
+```typescript
+export const BUILTIN_TOOL_COLORS: Record<string, string> = {
+  // ... existing colors
+  myapp: "#your-color"
 }
 ```
 
 ## Pull Request Guidelines
 
 1. Fork the repo and create your branch from `main`
-2. Test your changes locally
-3. Update documentation if needed
+2. Test your changes locally with `npm run build`
+3. Run `npm run format` before committing
 4. Submit a PR with a clear description
 
 ## Ideas for Contributions
@@ -65,7 +78,6 @@ export const BUILTIN_PATTERNS = {
 - [ ] More built-in parsers (aerospace, raycast, wezterm, etc.)
 - [ ] Export to markdown/PDF
 - [ ] Practice mode (quiz yourself on keybindings)
-- [ ] Watch mode (auto-reload on file change)
 - [ ] Themes/color customization
 - [ ] Mouse support
 
@@ -74,6 +86,7 @@ export const BUILTIN_PATTERNS = {
 - Use TypeScript
 - Follow existing patterns in the codebase
 - Keep components small and focused
+- Use `.js` extensions in imports (for ESM compatibility)
 
 ## Questions?
 

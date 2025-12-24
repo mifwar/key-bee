@@ -1,11 +1,11 @@
-# Keybind TUI
+# Key Bee 🐝
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Bun](https://img.shields.io/badge/Bun-%23000000.svg?logo=bun&logoColor=white)](https://bun.sh)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 
-A terminal user interface for browsing and searching all your keybindings across different tools.
+A terminal user interface for browsing and searching all your **keyb**indings across different tools.
 
-Built with [OpenTUI](https://github.com/sst/opentui) + React.
+Built with [Ink](https://github.com/vadimdemedes/ink) + [React](https://react.dev).
 
 <!-- TODO: Add screenshot/gif here -->
 <!-- ![Demo](./demo.gif) -->
@@ -14,7 +14,7 @@ Built with [OpenTUI](https://github.com/sst/opentui) + React.
 
 - **Multi-tool support**: skhd, tmux, nvim, karabiner, zsh, hammerspoon
 - **Fuzzy search**: Find any keybinding instantly
-- **Conflict detection**: Identify overlapping keybindings across tools  
+- **Conflict detection**: Identify overlapping keybindings across tools
 - **Auto-discovery**: Automatically finds config files in your dotfiles
 - **Change detection**: Detects when config files change
 - **Custom parsers**: Add your own tools via regex patterns
@@ -23,19 +23,12 @@ Built with [OpenTUI](https://github.com/sst/opentui) + React.
 ## Installation
 
 ```bash
-# Clone the repo
-git clone https://github.com/yourusername/keybind-tui.git
-cd keybind-tui
-
-# Install dependencies
-bun install
-
-# Run
-bun run dev
+# Run directly (no install)
+npx @mifwar/key-bee
 
 # Or install globally
-bun link --global
-kb  # Run from anywhere
+npm install -g @mifwar/key-bee
+kb
 ```
 
 ## Usage
@@ -49,15 +42,16 @@ On first run, a setup wizard will guide you through:
 
 ### Navigation
 
-| Key | Action |
-|-----|--------|
-| `j/k` | Navigate up/down |
-| `h/l` or `Tab` | Switch tabs |
-| `/` or `f` | Search |
-| `s` | Sync (reload configs) |
-| `g/G` | Go to top/bottom |
-| `Ctrl+R` | Re-run setup |
-| `q` | Quit |
+| Key            | Action                |
+| -------------- | --------------------- |
+| `j/k`          | Navigate up/down      |
+| `h/l` or `Tab` | Switch tabs           |
+| `/` or `f`     | Search                |
+| `e`            | Edit selected config  |
+| `s`            | Sync (reload configs) |
+| `g/G`          | Go to top/bottom      |
+| `Ctrl+R`       | Re-run setup          |
+| `q`            | Quit                  |
 
 ### Tabs
 
@@ -67,14 +61,11 @@ On first run, a setup wizard will guide you through:
 
 ## Configuration
 
-Config is stored at `~/.config/keybind-tui/config.json`:
+Config is stored at `~/.config/key-bee/config.json`:
 
 ```json
 {
-  "basePaths": [
-    "~/code/dotfiles",
-    "~/.config"
-  ],
+  "basePaths": ["~/code/dotfiles", "~/.config"],
   "sources": [
     { "type": "skhd", "path": "skhd/skhdrc" },
     { "type": "tmux", "path": "~/.tmux.conf" },
@@ -98,11 +89,14 @@ Add custom tools using regex patterns:
       "pattern": "^([a-z-]+)\\s*=\\s*['\"]([^'\"]+)['\"]",
       "keyGroup": 1,
       "actionGroup": 2,
-      "commentPrefix": "#"
+      "commentPrefix": "#",
+      "color": "#ff6b6b"
     }
   ]
 }
 ```
+
+The `color` field is optional - custom tools without it will use gray.
 
 ### Supported Path Formats
 
@@ -120,32 +114,31 @@ Add custom tools using regex patterns:
 - **Tilde paths** - Expanded to home directory
 - **Absolute paths** - Used as-is
 
+### Editor Integration
+
+Press `e` to open the selected config in your editor. The app uses `$EDITOR`, then `$VISUAL`, then falls back to `vim`.
+
 ## Built-in Parsers
 
-| Type | Files | Description |
-|------|-------|-------------|
-| `skhd` | `skhdrc`, `.skhdrc` | skhd hotkey daemon |
-| `tmux` | `.tmux.conf`, `tmux.conf` | tmux keybindings |
-| `nvim-keymap` | `keymaps.lua`, `keys.lua` | Neovim Lua keymaps |
-| `karabiner` | `karabiner.json` | Karabiner-Elements |
-| `zsh-alias` | `.zshrc` | Zsh aliases & bindkeys |
-| `hammerspoon` | `init.lua` | Hammerspoon hotkeys |
+| Type          | Files                     | Description            |
+| ------------- | ------------------------- | ---------------------- |
+| `skhd`        | `skhdrc`, `.skhdrc`       | skhd hotkey daemon     |
+| `tmux`        | `.tmux.conf`, `tmux.conf` | tmux keybindings       |
+| `nvim-keymap` | `keymaps.lua`, `keys.lua` | Neovim Lua keymaps     |
+| `karabiner`   | `karabiner.json`          | Karabiner-Elements     |
+| `zsh-alias`   | `.zshrc`                  | Zsh aliases & bindkeys |
+| `hammerspoon` | `init.lua`                | Hammerspoon hotkeys    |
 
 ## Tech Stack
 
-- [OpenTUI](https://github.com/sst/opentui) - Terminal UI framework
+- [Ink](https://github.com/vadimdemedes/ink) - Terminal UI framework
 - [React](https://react.dev) - UI components
-- [Bun](https://bun.sh) - JavaScript runtime
+- [Node.js](https://nodejs.org) - JavaScript runtime
 - [Fuse.js](https://fusejs.io) - Fuzzy search
 
 ## Contributing
 
-PRs welcome! Some ideas:
-
-- [ ] More built-in parsers (aerospace, raycast, etc.)
-- [ ] Export to markdown/PDF
-- [ ] Practice mode (quiz yourself)
-- [ ] Watch mode (auto-reload on file change)
+PRs welcome! Ideas: more built-in parsers (aerospace, raycast, wezterm, etc.)
 
 ## License
 

@@ -1,17 +1,17 @@
-import type { Keybinding } from "./types"
+import type { Keybinding } from "./types.js"
 
 const modifierMap: Record<string, string> = {
   shift: "shift",
   ctrl: "ctrl",
   alt: "alt",
-  cmd: "cmd",
+  cmd: "cmd"
 }
 
 function normalizeSkhdKeys(keys: string): string {
   const parts = keys.toLowerCase().split(/\s*[\+\-]\s*/)
   const mods: string[] = []
   let key = ""
-  
+
   for (const part of parts) {
     if (modifierMap[part]) {
       mods.push(modifierMap[part])
@@ -19,7 +19,7 @@ function normalizeSkhdKeys(keys: string): string {
       key = part
     }
   }
-  
+
   mods.sort()
   return [...mods, key].join("+")
 }
@@ -64,7 +64,7 @@ export function parseSkhdrc(content: string): Keybinding[] {
       keys: keys.trim(),
       normalizedKeys,
       action: action.trim(),
-      description,
+      description
     })
   }
 

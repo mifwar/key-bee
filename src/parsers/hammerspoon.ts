@@ -1,30 +1,31 @@
-import type { Keybinding } from "./types"
+import type { Keybinding } from "./types.js"
 
 export function parseHammerspoon(content: string): Keybinding[] {
   const bindings: Keybinding[] = []
   let id = 0
 
   // Match: hs.hotkey.bind({"cmd", "alt"}, "key", function)
-  const hotkeyRegex = /hs\.hotkey\.bind\s*\(\s*\{([^}]*)\}\s*,\s*["']([^"']+)["']\s*,\s*(?:["']([^"']+)["']|function|(\w+))/g
+  const hotkeyRegex =
+    /hs\.hotkey\.bind\s*\(\s*\{([^}]*)\}\s*,\s*["']([^"']+)["']\s*,\s*(?:["']([^"']+)["']|function|(\w+))/g
 
   let match
   while ((match = hotkeyRegex.exec(content)) !== null) {
     const [, modifiers, key, description, funcName] = match
-    
+
     const mods = modifiers
       .split(",")
-      .map(m => m.trim().replace(/["']/g, ""))
+      .map((m) => m.trim().replace(/["']/g, ""))
       .filter(Boolean)
-    
+
     const keys = [...mods, key].join(" + ")
-    
+
     bindings.push({
       id: `hammerspoon-${id++}`,
       tool: "hammerspoon" as any,
       keys,
       normalizedKeys: keys.toLowerCase().replace(/\s+\+\s+/g, "+"),
       action: funcName || "function",
-      description: description || funcName || "Hotkey action",
+      description: description || funcName || "Hotkey action"
     })
   }
 
@@ -33,21 +34,21 @@ export function parseHammerspoon(content: string): Keybinding[] {
 
   while ((match = hotkeyNewRegex.exec(content)) !== null) {
     const [, modifiers, key] = match
-    
+
     const mods = modifiers
       .split(",")
-      .map(m => m.trim().replace(/["']/g, ""))
+      .map((m) => m.trim().replace(/["']/g, ""))
       .filter(Boolean)
-    
+
     const keys = [...mods, key].join(" + ")
-    
+
     bindings.push({
       id: `hammerspoon-${id++}`,
       tool: "hammerspoon" as any,
       keys,
       normalizedKeys: keys.toLowerCase().replace(/\s+\+\s+/g, "+"),
       action: "hotkey",
-      description: "Hammerspoon hotkey",
+      description: "Hammerspoon hotkey"
     })
   }
 

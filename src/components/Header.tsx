@@ -1,3 +1,6 @@
+import React from "react"
+import { Box, Text } from "ink"
+
 interface Props {
   activeTab: string
   tabs: string[]
@@ -7,35 +10,40 @@ interface Props {
 
 export function Header({ activeTab, tabs, totalBindings, conflictCount }: Props) {
   return (
-    <box flexDirection="column" borderBottom borderColor="#3b3b3b" paddingBottom={1}>
-      <box flexDirection="row" justifyContent="space-between" paddingLeft={1} paddingRight={1}>
-        <text>
-          <span fg="#60a5fa">Keybinding Reference</span>
-          <span fg="#6b7280"> | </span>
-          <span fg="#a1a1aa">{totalBindings} bindings</span>
+    <Box
+      flexDirection="column"
+      borderStyle="single"
+      borderBottom
+      borderTop={false}
+      borderLeft={false}
+      borderRight={false}
+      borderColor="#3b3b3b"
+    >
+      <Box flexDirection="row" justifyContent="space-between" paddingLeft={1} paddingRight={1}>
+        <Text>
+          <Text color="#60a5fa">Key Bee</Text>
+          <Text color="#6b7280"> | </Text>
+          <Text color="#a1a1aa">{totalBindings} bindings</Text>
           {conflictCount > 0 && (
             <>
-              <span fg="#6b7280"> | </span>
-              <span fg="#ef4444">{conflictCount} conflicts</span>
+              <Text color="#6b7280"> | </Text>
+              <Text color="#ef4444">{conflictCount} conflicts</Text>
             </>
           )}
-        </text>
-        <text>
-          <span fg="#6b7280">q: quit | /: search | tab: switch view</span>
-        </text>
-      </box>
-      <box flexDirection="row" gap={2} paddingLeft={1} paddingTop={1}>
+        </Text>
+        <Text color="#6b7280">q: quit | /: search | tab: switch view</Text>
+      </Box>
+      <Box flexDirection="row" gap={2} paddingLeft={1} marginTop={1}>
         {tabs.map((tab) => (
-          <text key={tab}>
-            <span
-              fg={activeTab === tab ? "#000" : "#a1a1aa"}
-              bg={activeTab === tab ? "#60a5fa" : undefined}
-            >
-              {` ${tab} `}
-            </span>
-          </text>
+          <Text
+            key={tab}
+            color={activeTab === tab ? "#000" : "#a1a1aa"}
+            backgroundColor={activeTab === tab ? "#60a5fa" : undefined}
+          >
+            {` ${tab} `}
+          </Text>
         ))}
-      </box>
-    </box>
+      </Box>
+    </Box>
   )
 }

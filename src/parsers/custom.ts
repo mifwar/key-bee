@@ -1,10 +1,7 @@
-import type { Keybinding } from "./types"
-import type { CustomParserConfig } from "../config/types"
+import type { Keybinding } from "./types.js"
+import type { CustomParserConfig } from "../config/types.js"
 
-export function parseCustomConfig(
-  content: string,
-  config: CustomParserConfig
-): Keybinding[] {
+export function parseCustomConfig(content: string, config: CustomParserConfig): Keybinding[] {
   const bindings: Keybinding[] = []
   const lines = content.split("\n")
   const regex = new RegExp(config.pattern)
@@ -32,7 +29,7 @@ export function parseCustomConfig(
       normalizedKeys: keys.toLowerCase().replace(/\s+/g, "+"),
       action,
       description: description || action,
-      mode,
+      mode
     })
   }
 

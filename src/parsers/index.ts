@@ -1,23 +1,29 @@
 import { readFileSync, existsSync, statSync } from "fs"
-import type { Keybinding, ConflictGroup } from "./types"
-import type { SourceConfig, Config, Cache, CacheEntry, CustomParserConfig } from "../config/types"
-import { resolveSourcePath, hashFile, saveCache } from "../config/manager"
-import { parseSkhdrc } from "./skhd"
-import { parseTmuxConf } from "./tmux"
-import { parseNvimKeymaps } from "./nvim"
-import { parseZshAliases } from "./zsh"
-import { parseKarabiner } from "./karabiner"
-import { parseHammerspoon } from "./hammerspoon"
-import { parseCustomConfig } from "./custom"
+import type { Keybinding, ConflictGroup } from "./types.js"
+import type {
+  SourceConfig,
+  Config,
+  Cache,
+  CacheEntry,
+  CustomParserConfig
+} from "../config/types.js"
+import { resolveSourcePath, hashFile, saveCache } from "../config/manager.js"
+import { parseSkhdrc } from "./skhd.js"
+import { parseTmuxConf } from "./tmux.js"
+import { parseNvimKeymaps } from "./nvim.js"
+import { parseZshAliases } from "./zsh.js"
+import { parseKarabiner } from "./karabiner.js"
+import { parseHammerspoon } from "./hammerspoon.js"
+import { parseCustomConfig } from "./custom.js"
 
 export type { Keybinding, ConflictGroup }
-export { parseSkhdrc } from "./skhd"
-export { parseTmuxConf } from "./tmux"
-export { parseNvimKeymaps } from "./nvim"
-export { parseZshAliases } from "./zsh"
-export { parseKarabiner } from "./karabiner"
-export { parseHammerspoon } from "./hammerspoon"
-export { parseCustomConfig } from "./custom"
+export { parseSkhdrc } from "./skhd.js"
+export { parseTmuxConf } from "./tmux.js"
+export { parseNvimKeymaps } from "./nvim.js"
+export { parseZshAliases } from "./zsh.js"
+export { parseKarabiner } from "./karabiner.js"
+export { parseHammerspoon } from "./hammerspoon.js"
+export { parseCustomConfig } from "./custom.js"
 
 const PARSERS: Record<string, (content: string) => Keybinding[]> = {
   skhd: parseSkhdrc,
@@ -25,20 +31,20 @@ const PARSERS: Record<string, (content: string) => Keybinding[]> = {
   "nvim-keymap": parseNvimKeymaps,
   "zsh-alias": parseZshAliases,
   karabiner: parseKarabiner,
-  hammerspoon: parseHammerspoon,
+  hammerspoon: parseHammerspoon
 }
 
 export function parseSource(source: SourceConfig, content: string): Keybinding[] {
   if (source.type === "custom") {
     return parseCustomConfig(content, source as CustomParserConfig)
   }
-  
+
   const parser = PARSERS[source.type]
   if (!parser) {
     console.warn(`No parser for type: ${source.type}`)
     return []
   }
-  
+
   return parser(content)
 }
 
@@ -48,21 +54,24 @@ export function loadAllKeybindings(config: Config): { bindings: Keybinding[]; ca
 
   for (const source of config.sources) {
     if ("enabled" in source && source.enabled === false) continue
-    
+
     const resolvedPath = resolveSourcePath(source, config.basePaths)
     if (!resolvedPath || !existsSync(resolvedPath)) continue
 
     try {
       const content = readFileSync(resolvedPath, "utf-8")
-      const parsed = parseSource(source, content)
+      const parsed = parseSource(source, content).map((binding) => ({
+        ...binding,
+        sourcePath: resolvedPath
+      }))
       bindings.push(...parsed)
-      
+
       const stat = statSync(resolvedPath)
       entries.push({
         path: resolvedPath,
         hash: hashFile(resolvedPath),
         mtime: stat.mtimeMs,
-        bindingsCount: parsed.length,
+        bindingsCount: parsed.length
       })
     } catch (err) {
       console.warn(`Failed to parse ${resolvedPath}:`, err)
@@ -73,7 +82,7 @@ export function loadAllKeybindings(config: Config): { bindings: Keybinding[]; ca
     version: 1,
     lastSync: new Date().toISOString(),
     entries,
-    bindings,
+    bindings
   }
 
   return { bindings, cache }

@@ -1,4 +1,4 @@
-import type { Keybinding } from "./types"
+import type { Keybinding } from "./types.js"
 
 export function parseZshAliases(content: string): Keybinding[] {
   const bindings: Keybinding[] = []
@@ -19,7 +19,7 @@ export function parseZshAliases(content: string): Keybinding[] {
         keys: name.trim(),
         normalizedKeys: name.trim().toLowerCase(),
         action: command,
-        description: `Alias: ${command.slice(0, 50)}${command.length > 50 ? "..." : ""}`,
+        description: `Alias: ${command.slice(0, 50)}${command.length > 50 ? "..." : ""}`
       })
       continue
     }
@@ -34,7 +34,7 @@ export function parseZshAliases(content: string): Keybinding[] {
         keys,
         normalizedKeys: keys.toLowerCase(),
         action,
-        description: action,
+        description: action
       })
     }
   }

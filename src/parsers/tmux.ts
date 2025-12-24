@@ -1,13 +1,13 @@
-import type { Keybinding } from "./types"
+import type { Keybinding } from "./types.js"
 
 function normalizeTmuxKeys(keys: string, prefix: boolean): string {
   let normalized = keys.toLowerCase()
   const parts: string[] = []
-  
+
   if (prefix) {
     parts.push("prefix")
   }
-  
+
   if (normalized.includes("c-")) {
     parts.push("ctrl")
     normalized = normalized.replace("c-", "")
@@ -20,7 +20,7 @@ function normalizeTmuxKeys(keys: string, prefix: boolean): string {
     parts.push("shift")
     normalized = normalized.replace("s-", "")
   }
-  
+
   parts.push(normalized.trim())
   return parts.join("+")
 }
@@ -69,7 +69,7 @@ export function parseTmuxConf(content: string): Keybinding[] {
       normalizedKeys,
       action,
       description,
-      mode,
+      mode
     })
   }
 

@@ -1,71 +1,62 @@
-import type { Keybinding } from "../parsers"
-
-const toolColors: Record<string, string> = {
-  skhd: "#f97316",
-  tmux: "#22c55e",
-  nvim: "#3b82f6",
-  yabai: "#a855f7",
-  karabiner: "#ec4899",
-  zsh: "#06b6d4",
-  hammerspoon: "#8b5cf6",
-}
-
-function getToolColor(tool: string): string {
-  return toolColors[tool] || "#888888"
-}
+import React from "react"
+import { Box, Text } from "ink"
+import type { Keybinding } from "../parsers/index.js"
+import { getToolColor } from "../utils/colors.js"
 
 interface Props {
   bindings: Keybinding[]
   selectedIndex: number
   scrollOffset: number
   maxVisible: number
+  customColors?: Record<string, string>
 }
 
-export function KeybindingList({ bindings, selectedIndex, scrollOffset, maxVisible }: Props) {
+export function KeybindingList({
+  bindings,
+  selectedIndex,
+  scrollOffset,
+  maxVisible,
+  customColors
+}: Props) {
   const visibleBindings = bindings.slice(scrollOffset, scrollOffset + maxVisible)
 
   return (
-    <box flexDirection="column" gap={0}>
+    <Box flexDirection="column">
       {visibleBindings.map((binding, i) => {
         const actualIndex = scrollOffset + i
         const isSelected = actualIndex === selectedIndex
-        const toolColor = getToolColor(binding.tool)
+        const toolColor = getToolColor(binding.tool, customColors)
 
         return (
-          <box
-            key={binding.id}
-            flexDirection="row"
-            backgroundColor={isSelected ? "#3b3b3b" : undefined}
-            paddingLeft={1}
-            paddingRight={1}
-          >
-            <box width={6}>
-              <text>
-                <span fg={toolColor}>{binding.tool.toUpperCase().padEnd(5)}</span>
-              </text>
-            </box>
-            <box width={25}>
-              <text>
-                <span fg="#fbbf24">{binding.keys.padEnd(24)}</span>
-              </text>
-            </box>
-            <box flexGrow={1}>
-              <text>
-                <span fg={isSelected ? "#fff" : "#a1a1aa"}>
-                  {binding.description || binding.action}
-                </span>
-              </text>
-            </box>
+          <Box key={binding.id} flexDirection="row" paddingLeft={1} paddingRight={1}>
+            <Box width={6}>
+              <Text color={toolColor} backgroundColor={isSelected ? "#3b3b3b" : undefined}>
+                {binding.tool.toUpperCase().padEnd(5)}
+              </Text>
+            </Box>
+            <Box width={25}>
+              <Text color="#fbbf24" backgroundColor={isSelected ? "#3b3b3b" : undefined}>
+                {binding.keys.padEnd(24)}
+              </Text>
+            </Box>
+            <Box flexGrow={1}>
+              <Text
+                color={isSelected ? "#fff" : "#a1a1aa"}
+                backgroundColor={isSelected ? "#3b3b3b" : undefined}
+              >
+                {binding.description || binding.action}
+              </Text>
+            </Box>
             {binding.mode && (
-              <box width={10}>
-                <text>
-                  <span fg="#6b7280">[{binding.mode}]</span>
-                </text>
-              </box>
+              <Box width={10}>
+                <Text color="#6b7280" backgroundColor={isSelected ? "#3b3b3b" : undefined}>
+                  [{binding.mode}]
+                </Text>
+              </Box>
             )}
-          </box>
+          </Box>
         )
       })}
-    </box>
+    </Box>
   )
 }

@@ -1,4 +1,4 @@
-import type { Keybinding } from "./types"
+import type { Keybinding } from "./types.js"
 
 function normalizeNvimKeys(keys: string): string {
   let normalized = keys.toLowerCase()
@@ -34,7 +34,8 @@ export function parseNvimKeymaps(content: string): Keybinding[] {
   const bindings: Keybinding[] = []
   let id = 0
 
-  const keymapRegex = /keymap\.set\(\s*["']([^"']+)["']\s*,\s*["']([^"']+)["']\s*,\s*(?:["']([^"']+)["']|[^,]+)\s*,?\s*(?:\{[^}]*desc\s*=\s*["']([^"']+)["'][^}]*\})?/g
+  const keymapRegex =
+    /keymap\.set\(\s*["']([^"']+)["']\s*,\s*["']([^"']+)["']\s*,\s*(?:["']([^"']+)["']|[^,]+)\s*,?\s*(?:\{[^}]*desc\s*=\s*["']([^"']+)["'][^}]*\})?/g
 
   let match
   while ((match = keymapRegex.exec(content)) !== null) {
@@ -46,7 +47,7 @@ export function parseNvimKeymaps(content: string): Keybinding[] {
       v: "visual",
       x: "visual",
       c: "command",
-      t: "terminal",
+      t: "terminal"
     }
 
     bindings.push({
@@ -56,7 +57,7 @@ export function parseNvimKeymaps(content: string): Keybinding[] {
       normalizedKeys: normalizeNvimKeys(keys),
       action: action || "function",
       description: desc || action || "Custom action",
-      mode: modeMap[mode] || mode,
+      mode: modeMap[mode] || mode
     })
   }
 

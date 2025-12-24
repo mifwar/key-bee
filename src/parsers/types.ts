@@ -1,11 +1,12 @@
 export interface Keybinding {
   id: string
-  tool: "skhd" | "tmux" | "nvim" | "yabai"
+  tool: string
   keys: string
   normalizedKeys: string
   action: string
   description?: string
   mode?: string
+  sourcePath?: string
 }
 
 export interface ConflictGroup {
