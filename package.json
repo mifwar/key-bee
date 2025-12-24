@@ -1,6 +1,6 @@
 {
   "name": "@mifwar/key-bee",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A TUI for browsing and searching keybindings across tools (skhd, tmux, nvim, karabiner, zsh, hammerspoon)",
   "type": "module",
   "license": "MIT",
