@@ -104,8 +104,31 @@ export function detectConflicts(bindings: Keybinding[]): ConflictGroup[] {
   const conflicts: ConflictGroup[] = []
   for (const [normalizedKeys, groupBindings] of groups) {
     if (groupBindings.length > 1) {
-      const tools = new Set(groupBindings.map((b) => b.tool))
-      if (tools.size > 1) {
+      const tools = new Map<string, Keybinding[]>()
+      for (const binding of groupBindings) {
+        const existing = tools.get(binding.tool) || []
+        existing.push(binding)
+        tools.set(binding.tool, existing)
+      }
+
+      const hasCrossToolConflict = tools.size > 1
+      let hasSameToolSameModeConflict = false
+
+      if (!hasCrossToolConflict) {
+        for (const toolBindings of tools.values()) {
+          const modes = new Map<string, number>()
+          for (const binding of toolBindings) {
+            const modeKey = binding.mode || "__default__"
+            modes.set(modeKey, (modes.get(modeKey) || 0) + 1)
+          }
+          if ([...modes.values()].some((count) => count > 1)) {
+            hasSameToolSameModeConflict = true
+            break
+          }
+        }
+      }
+
+      if (hasCrossToolConflict || hasSameToolSameModeConflict) {
         conflicts.push({ normalizedKeys, bindings: groupBindings })
       }
     }
