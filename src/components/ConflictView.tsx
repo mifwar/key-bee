@@ -21,7 +21,7 @@ export function ConflictView({
   if (conflicts.length === 0) {
     return (
       <Box paddingLeft={2} marginTop={1}>
-        <Text color="#22c55e">No conflicts detected across tools!</Text>
+        <Text color="#22c55e">No conflicts detected!</Text>
       </Box>
     )
   }

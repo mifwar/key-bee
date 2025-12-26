@@ -1,27 +1,32 @@
 import type { Keybinding } from "./types.js"
 
 function normalizeTmuxKeys(keys: string, prefix: boolean): string {
-  let normalized = keys.toLowerCase()
+  let raw = keys.trim()
   const parts: string[] = []
+  let sawShift = false
 
   if (prefix) {
     parts.push("prefix")
   }
 
-  if (normalized.includes("c-")) {
-    parts.push("ctrl")
-    normalized = normalized.replace("c-", "")
-  }
-  if (normalized.includes("m-")) {
-    parts.push("alt")
-    normalized = normalized.replace("m-", "")
-  }
-  if (normalized.includes("s-")) {
-    parts.push("shift")
-    normalized = normalized.replace("s-", "")
+  while (/^[cCmsS]-/.test(raw)) {
+    if (/^c-/.test(raw)) {
+      parts.push("ctrl")
+    } else if (/^m-/.test(raw)) {
+      parts.push("alt")
+    } else if (/^s-/.test(raw)) {
+      parts.push("shift")
+      sawShift = true
+    }
+    raw = raw.slice(2)
   }
 
-  parts.push(normalized.trim())
+  const rawKey = raw.trim()
+  if (!sawShift && rawKey.length === 1 && /[A-Z]/.test(rawKey)) {
+    parts.push("shift")
+  }
+
+  parts.push(rawKey.toLowerCase())
   return parts.join("+")
 }
 
